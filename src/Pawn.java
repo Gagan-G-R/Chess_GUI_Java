@@ -31,9 +31,9 @@ public class Pawn extends Piece {
     public Pawn(COLOUR colour, Coordinate OGcoord) {
         super(ID.PAWN, colour, OGcoord);
         if (getColour() == COLOUR.B)
-            icon = new ImageIcon("BPawn.png");
+            icon = new ImageIcon("./Images/BPawn.png");
         else if (getColour() == COLOUR.W)
-            icon = new ImageIcon("WPawn.png");
+            icon = new ImageIcon("./Images/WPawn.png");
     }
 
     public Pawn(Pawn original) {

@@ -18,9 +18,9 @@ public class Rook extends Piece{
     public Rook(COLOUR colour, Coordinate OGcoord) {
         super(ID.ROOK, colour, OGcoord);
         if (getColour() == COLOUR.B)
-            icon = new ImageIcon("BRook.png");
+            icon = new ImageIcon("./Images/BRook.png");
         else if (getColour() == COLOUR.W)
-            icon = new ImageIcon("WRook.png");
+            icon = new ImageIcon("./Images/WRook.png");
     }
 
     public Rook (Rook original) {

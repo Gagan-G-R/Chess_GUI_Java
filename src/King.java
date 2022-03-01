@@ -29,9 +29,9 @@ public class King extends Piece{
     public King(COLOUR colour, Coordinate OGcoord) {
         super(ID.KING, colour, OGcoord);
         if (getColour() == COLOUR.B)
-            icon = new ImageIcon("BKing.png");
+            icon = new ImageIcon("./Images/BKing.png");
         else if (getColour() == COLOUR.W)
-            icon = new ImageIcon("WKing.png");
+            icon = new ImageIcon("./Images/WKing.png");
     }
 
     public King(King original) {
