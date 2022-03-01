@@ -1,0 +1,6 @@
+#!/bin/bash
+javac src/*.java
+java -cp src/ Main
+rm src/*.class
+
+
