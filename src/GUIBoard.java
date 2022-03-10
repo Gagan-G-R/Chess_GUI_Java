@@ -50,11 +50,26 @@ public class GUIBoard extends JFrame {
     // the button used to save a game
     private final JButton saveButton = new JButton("Save Game");
 
+	//ours--------------------------------------------------------------
+	private String bn;
+	private String wn;
+	private int hh,mm,ss;
+	private final JButton WName = new JButton(bn);
+    private final JButton BName = new JButton(wn);
+    private final JButton WClock = new JButton(bn);
+    private final JButton BClock = new JButton(wn);
+    private Clock blackClock ;
+    private Clock whiteClock ;
+    
+    
+    //ours-----------------------------------------------------
+    
+
     // colours for the board
-    private final Color brown = new Color(150, 75, 0); //brown #964B00
-    private final Color pastel = new Color(255, 222, 173); //navajorwhite #FFDEAD
-    private final Color intermediate = new Color(255, 255, 153);
-    public static final Color infoColour = new Color(51,51,51);
+    private final Color brown = new Color(119,148,85); //brown #964B00
+    private final Color pastel = new Color(235,235,208); //navajorwhite #FFDEAD
+    private final Color intermediate = new Color(246,249,120);
+    public static final Color infoColour = new Color(49,46,43);
 
     // size of a square in board
     private static final int tileSize = 88;
@@ -88,13 +103,24 @@ public class GUIBoard extends JFrame {
      * @param p the pieces HashMap used for the game
      */
 
-    public GUIBoard(Pieces p) {
+    public GUIBoard(Pieces p, String bn , String wn , int hh , int mm ,int ss) {
         setTitle("CHESS23");
         setBackground(Color.black);
         Container contents = getContentPane();
         contents.setLayout(new BorderLayout());
+        
+        //ours---------------------------------------------------------
+        this.hh=hh;
+        this.mm=mm;
+        this.ss=ss;
+        this.blackClock = new Clock(this.hh,this.mm,this.ss);
+        this.whiteClock = new Clock(this.hh,this.mm,this.ss);
+        this.bn=bn;
+        this.wn=wn;
+        //----------------------------------------------------------
 
         pieces = p;
+        
 
         JPanel boardPanel = new JPanel(new GridLayout(dimension, dimension));
         for (int rank = dimension; rank >= firstRank; rank--) {
@@ -371,18 +397,63 @@ public class GUIBoard extends JFrame {
 
         movePanel.add(scrollMoves,gbc); // show the moves being played
 
-        saveButton.setBackground(Color.orange);
-        saveButton.setForeground(Color.white);
+        saveButton.setBackground(brown);
+        saveButton.setForeground(pastel);
         saveButton.setOpaque(true);
         saveButton.setContentAreaFilled(true);
         saveButton.setBorderPainted(false);
         SaveHandle saver = new SaveHandle();
         saveButton.addActionListener(saver);
-
+        
         gbc.gridy = GridBagConstraints.RELATIVE;
         gbc.fill = GridBagConstraints.NONE;
+		
+		//our work-------------------------------------------------------------------------
+		
+		WClock.setText(whiteClock.getTime());
+		BClock.setText(blackClock.getTime());
+		WName.setText(wn);
+		BName.setText(bn);
+		
+    	
+        WClock.setBackground(brown);
+        WClock.setForeground(pastel);
+        WClock.setOpaque(true);
+        WClock.setContentAreaFilled(true);
+        WClock.setBorderPainted(false);
+
+        BClock.setBackground(brown);
+        BClock.setForeground(Color.black);
+        BClock.setOpaque(true);
+        BClock.setContentAreaFilled(true);
+        BClock.setBorderPainted(false);
         
+        WName.setBackground(brown);
+        WName.setForeground(pastel);
+        WName.setOpaque(true);
+        WName.setContentAreaFilled(true);
+        WName.setBorderPainted(false);
+
+        BName.setBackground(brown);
+        BName.setForeground(Color.black);
+        BName.setOpaque(true);
+        BName.setContentAreaFilled(true);
+        BName.setBorderPainted(false);
+        
+        
+        movePanel.add(BName,gbc);
+        movePanel.add(BClock,gbc);
         movePanel.add(saveButton,gbc); // add saving button
+        movePanel.add(WName,gbc);
+        movePanel.add(WClock,gbc);
+        
+        
+        //--------------------------------------------------------------------------------
+
+        
+        
+        
+        
 
         matePane.setEditable(false);
         matePane.setForeground(Color.white);
@@ -404,6 +475,13 @@ public class GUIBoard extends JFrame {
      */
 
     private void setTurn() {
+        if (turn==COLOUR.W) {
+            whiteClock.decr();
+            WClock.setText(whiteClock.getTime());
+        }else{
+            blackClock.decr();
+            BClock.setText(blackClock.getTime());
+        }
         turn = COLOUR.not(turn);
     }
 
@@ -607,9 +685,9 @@ public class GUIBoard extends JFrame {
 
 
     public static void main (String[]args){
-        Pieces pieces = new Pieces();
-        pieces.setGUIGame(true);
-        new GUIBoard(pieces);
+        //Pieces pieces = new Pieces();
+        //pieces.setGUIGame(true);
+        //new GUIBoard(pieces);
     }
 
 }
