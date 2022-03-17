@@ -51,15 +51,17 @@ public class GUIBoard extends JFrame {
     private final JButton saveButton = new JButton("Save Game");
 
 	//ours--------------------------------------------------------------
-	private String bn;
-	private String wn;
-	private int hh,mm,ss;
+	private static String bn;
+	private static String wn;
+	private static int hh ,mm,ss;
 	private final JButton WName = new JButton(bn);
     private final JButton BName = new JButton(wn);
     private final JButton WClock = new JButton(bn);
     private final JButton BClock = new JButton(wn);
     private Clock blackClock ;
     private Clock whiteClock ;
+    long start = System.nanoTime();
+    private static String result;
     
     
     //ours-----------------------------------------------------
@@ -475,12 +477,30 @@ public class GUIBoard extends JFrame {
      */
 
     private void setTurn() {
+        
+        long  elapsedTime = (System.nanoTime() - start)/1000000000; 
+        // System.out.println(elapsedTime);
+        start = System.nanoTime(); 
+        
         if (turn==COLOUR.W) {
-            whiteClock.decr();
-            WClock.setText(whiteClock.getTime());
+            if(whiteClock.outOfTime()){
+                matePane.setText(COLOUR.not(turn).toString() + " won by Time.");
+                disableBoardButtons();
+            }
+            else{
+                whiteClock.decrTotal(elapsedTime);
+                WClock.setText(whiteClock.getTime());
+            }
         }else{
-            blackClock.decr();
-            BClock.setText(blackClock.getTime());
+            if(blackClock.outOfTime()){
+                matePane.setText(COLOUR.not(turn).toString() + " won by Time.");
+                disableBoardButtons();
+            }
+            else{
+                blackClock.decrTotal(elapsedTime);
+                BClock.setText(blackClock.getTime());
+            }
+            
         }
         turn = COLOUR.not(turn);
     }
@@ -605,12 +625,15 @@ public class GUIBoard extends JFrame {
                         setTurn();
 
                         if (pieces.isMate(turn)) {
+                            result = COLOUR.not(turn).toString() + " won by checkmate.";
                             matePane.setText(COLOUR.not(turn).toString() + " won by checkmate.");
                             disableBoardButtons();
                         } else if (pieces.isStalemate(COLOUR.not(turn))) {
+                            result = "Draw by stalemate.";
                             matePane.setText("Draw by stalemate.");
                             disableBoardButtons();
                         } else if (pieces.isDraw()) {
+                            result = "It's a draw.";
                             matePane.setText("It's a draw.");
                             disableBoardButtons();
                         }
@@ -648,38 +671,56 @@ public class GUIBoard extends JFrame {
             UIManager.put("Panel.background", infoColour);
             UIManager.put("OptionPane.messageForeground", Color.white);
 
-            String fileSave = (String) JOptionPane.showInputDialog(null,
-                    "Enter a file name to save the game:",
-                    "Save Game",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    icon,null,null);
+            //ours-------------------------------------------------
 
-            if (fileSave != null) {
+            String time = String.valueOf(hh)+":"+String.valueOf(ss)+":"+String.valueOf(mm);
+            GameDataBase GDB = new GameDataBase(wn,bn,time,result,str.toString());
+            GDB.PutData();
 
-                String filePath = ChessIO.toTxt(fileSave);
-
-                if (ChessIO.isErrorSave(filePath)) {
-                    JOptionPane.showMessageDialog(null,
-                            fileSave + " is an incorrect file name.",
-                            "Failed Saving",
-                            JOptionPane.ERROR_MESSAGE,
-                            icon);
-                } else {
-                    if (ChessIO.saveGame(str.toString(), Paths.get(filePath)))
-                        JOptionPane.showMessageDialog(null,
-                                "Game saved succesfuly on path " + filePath,
+            JOptionPane.showMessageDialog(null,
+                                "Game saved succesfuly",
                                 "Save Succesful",
                                  JOptionPane.INFORMATION_MESSAGE,
                                  icon);
-                    else
-                        JOptionPane.showMessageDialog(null,
-                                "There was an error saving the file on the path " + filePath + ". The name provided might be a duplicate.",
-                                "Failed Saving",
-                                JOptionPane.ERROR_MESSAGE,
-                                icon);
 
-                }
-            }
+
+            
+            //--------------------------------------------------
+
+
+            // String fileSave = (String) JOptionPane.showInputDialog(null,
+            //         "Enter a file name to save the game:",
+            //         "Save Game",
+            //         JOptionPane.INFORMATION_MESSAGE,
+            //         icon,null,null);
+
+            // if (fileSave != null) {
+
+                
+            //     String filePath = ChessIO.toTxt(fileSave);
+
+            //     if (ChessIO.isErrorSave(filePath)) {
+            //         JOptionPane.showMessageDialog(null,
+            //                 fileSave + " is an incorrect file name.",
+            //                 "Failed Saving",
+            //                 JOptionPane.ERROR_MESSAGE,
+            //                 icon);
+            //     } else {
+            //         if (ChessIO.saveGame(str.toString(), Paths.get(filePath)))
+            //             JOptionPane.showMessageDialog(null,
+            //                     "Game saved succesfuly on path " + filePath,
+            //                     "Save Succesful",
+            //                      JOptionPane.INFORMATION_MESSAGE,
+            //                      icon);
+            //         else
+            //             JOptionPane.showMessageDialog(null,
+            //                     "There was an error saving the file on the path " + filePath + ". The name provided might be a duplicate.",
+            //                     "Failed Saving",
+            //                     JOptionPane.ERROR_MESSAGE,
+            //                     icon);
+
+            //     }
+            // }
         }
     }
 
