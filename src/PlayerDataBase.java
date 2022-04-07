@@ -1,77 +1,55 @@
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 
 public class PlayerDataBase {
 
-	String WPlayerName;
-	String BPlayerName;
-	String Time;
-	String Game;
-	String Result;
-	List<String[]> content;
+	String Name;
+	COLOUR winner;
+	String type;
+	int count=0;
+	int Lcount=1;
 
-	PlayerDataBase(String WPlayerName, String BPlayerName , String Time, String Result , String Game) {
-		this.WPlayerName = WPlayerName;
-		this.BPlayerName = BPlayerName;
-		this.Time = Time;
-		this.Result = Result;
-		this.Game = Game;
+	PlayerDataBase(String Name,COLOUR turn, String type) {
+		this.Name = Name;
+		this.type = type;
+		this.winner = turn;
 	}
 
-	String loc = "/home/gagan/Desktop/6th SEM/My-Chess/players.csv";
+
 	
 	public void getData(){
-
-		try{
-			content = new ArrayList<>();
-			try (BufferedReader reader = new BufferedReader(new FileReader(loc))) {
-				String line = "";
-				while ((line = reader.readLine()) != null) {
-					content.add(line.split(","));
-				}
-			} catch (FileNotFoundException e) {
-			  //Some error logging
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		
 	}
 
-	// public void PutData(){
-	// 	try{
-
-	
-	// 		FileWriter fstream = new FileWriter(loc, true);
-	// 		BufferedWriter out = new BufferedWriter(fstream);
-
-	// 		int lines = 0;
-	// 		try (BufferedReader reader = new BufferedReader(new FileReader(loc))) {
-	// 			while (reader.readLine() != null) lines++;
-	// 		} catch (IOException e) {
-	// 			e.printStackTrace();
-	// 		}
-
-	// 		int gameno;
-	// 		if(lines%2==0){
-	// 			gameno = (lines/2)+1;
-	// 		}
-	// 		else{
-	// 			gameno = ((lines-1)/2)+1;
-	// 		}
-	
-	// 		System.out.print("no of lines are : "+lines+" Writing....");
-	// 		out.write("\n"+gameno+","+Time+","+WPlayerName+","+BPlayerName+","+Result+","+Game);
-	// 		System.out.print("Written!");
-	// 		out.newLine();
-	
-	// 		//close buffer writer
-	// 		out.close();
-	// 	}
-	// 	catch (IOException e) {
-	// 		e.printStackTrace();
-	// 	}
-	// }
+	public void PutData(){
+		
+		if(this.type == "B") {
+			if(this.winner == COLOUR.W) {
+				count =1;
+				Lcount=0;
+			}
+		}
+		if(this.type == "W") {
+			if(this.winner == COLOUR.B) {
+				count =1;
+				Lcount=0;
+			}
+		}
+		
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+    	    Connection con=DriverManager.getConnection(  
+    	    "jdbc:mysql://localhost:3306/MVC_Project","gagan","password");  
+    	    Statement stmt=con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+    	       ResultSet.CONCUR_READ_ONLY);  
+    	    stmt.executeUpdate("insert into Players values(\""+this.Name+"\",\""+this.count+"\",\""+this.Lcount+"\",\""+0+"\");");
+    	    con.close();  
+    	    }
+		catch(Exception e){ 
+			System.out.println(e);
+		}
+		
+	}
 }

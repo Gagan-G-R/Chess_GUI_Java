@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.*;
 
 public class GameDataBase {
 
@@ -18,37 +19,16 @@ public class GameDataBase {
 
 	public void PutData(){
 		try{
-
-			String loc = "/home/gagan/Desktop/6th SEM/My-Chess/games.csv";
-	
-			FileWriter fstream = new FileWriter(loc, true);
-			BufferedWriter out = new BufferedWriter(fstream);
-
-			int lines = 0;
-			try (BufferedReader reader = new BufferedReader(new FileReader(loc))) {
-				while (reader.readLine() != null) lines++;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			int gameno;
-			if(lines%2==0){
-				gameno = (lines/2)+1;
-			}
-			else{
-				gameno = ((lines-1)/2)+1;
-			}
-	
-			System.out.print("no of lines are : "+lines+" Writing....");
-			out.write("\n"+gameno+","+Time+","+WPlayerName+","+BPlayerName+","+Result+","+Game);
-			System.out.print("Written!");
-			out.newLine();
-	
-			//close buffer writer
-			out.close();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+    	    Connection con=DriverManager.getConnection(  
+    	    "jdbc:mysql://localhost:3306/MVC_Project","gagan","password");  
+    	    Statement stmt=con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+    	       ResultSet.CONCUR_READ_ONLY);  
+    	    stmt.executeUpdate("insert into Games values(\""+this.Time+"\",\""+this.WPlayerName+"\",\""+this.BPlayerName+"\",\""+this.Result+"\",\""+this.Game+"\");");
+    	    con.close();  
+    	    }
+		catch(Exception e){ 
+			System.out.println(e);
 		}
 	}
 }

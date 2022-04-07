@@ -62,6 +62,7 @@ public class GUIBoard extends JFrame {
     private Clock whiteClock ;
     long start = System.nanoTime();
     private static String result;
+    private int winner ;
     
     
     //ours-----------------------------------------------------
@@ -676,6 +677,12 @@ public class GUIBoard extends JFrame {
             String time = String.valueOf(hh)+":"+String.valueOf(ss)+":"+String.valueOf(mm);
             GameDataBase GDB = new GameDataBase(wn,bn,time,result,str.toString());
             GDB.PutData();
+            
+            PlayerDataBase PDB1 = new PlayerDataBase(wn,turn,"W");
+            PDB1.PutData();
+            
+            PlayerDataBase PDB2 = new PlayerDataBase(bn,turn,"B");
+            PDB2.PutData();
 
             JOptionPane.showMessageDialog(null,
                                 "Game saved succesfuly",
