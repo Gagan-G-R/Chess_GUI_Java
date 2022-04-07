@@ -9,6 +9,9 @@ public class PlayerDataBase {
 	String type;
 	int count=0;
 	int Lcount=1;
+	int wins=0;
+	int loss=0;
+	int draws=0;
 
 	PlayerDataBase(String Name,COLOUR turn, String type) {
 		this.Name = Name;
@@ -44,7 +47,31 @@ public class PlayerDataBase {
     	    "jdbc:mysql://localhost:3306/MVC_Project","gagan","password");  
     	    Statement stmt=con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
     	       ResultSet.CONCUR_READ_ONLY);  
-    	    stmt.executeUpdate("insert into Players values(\""+this.Name+"\",\""+this.count+"\",\""+this.Lcount+"\",\""+0+"\");");
+    	    ResultSet res = stmt.executeQuery("select * from Players where Name=\""+this.Name+"\"");
+    	    while(res.next()) {
+    	    	wins = res.getInt(2);
+        	    loss  = res.getInt(3);
+        	    draws = res.getInt(4);
+        	    System.out.println("Wins: "+wins);
+        	    System.out.println("Loss: "+loss);
+        	    System.out.println("Draw: "+draws);
+        	    
+    	    }
+    	    stmt.executeUpdate("delete from Players where Name=\""+this.Name+"\"");
+    	    
+    	    con.close();  
+    	    }
+		catch(Exception e){ 
+			System.out.println("Bro full errors: "+e);
+		}
+		
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");  
+    	    Connection con=DriverManager.getConnection(  
+    	    "jdbc:mysql://localhost:3306/MVC_Project","gagan","password");  
+    	    Statement stmt=con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+    	       ResultSet.CONCUR_READ_ONLY);  
+    	    stmt.executeUpdate("insert into Players values(\""+this.Name+"\",\""+(this.count+wins)+"\",\""+(this.Lcount+loss)+"\",\""+draws+"\");");
     	    con.close();  
     	    }
 		catch(Exception e){ 
