@@ -15,14 +15,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import View.MainFrame;
 
 public class StartMenu implements Runnable {
     public void run() {
         final JFrame startWindow = new JFrame("Chess");
         // Set window properties
-        startWindow.setLocation(300,100);
-        startWindow.setResizable(false);
-        startWindow.setSize(260, 240);
+        startWindow.setLocation(700,400);
+        startWindow.setResizable(true);
+        startWindow.setSize(400,400);
         
         Box components = Box.createVerticalBox();
         startWindow.add(components);
@@ -33,40 +36,27 @@ public class StartMenu implements Runnable {
         final JLabel titleLabel = new JLabel("Chess");
         titlePanel.add(titleLabel);
         
+        
+        
         // Black player selections
         final JPanel blackPanel = new JPanel();
         components.add(blackPanel, BorderLayout.EAST);
+        final JLabel titleLabel_black = new JLabel("Black Player :");
+        blackPanel.add(titleLabel_black);
         final JLabel blackPiece = new JLabel();
-        try {
-            Image blackImg = ImageIO.read(getClass().getResource("bp.png"));
-            blackPiece.setIcon(new ImageIcon(blackImg));
-            blackPanel.add(blackPiece);
-        } catch (Exception e) {
-            System.out.println("Required game file bp.png missing");
-        }
-        
-        
-        
         final JTextField blackInput = new JTextField("Black", 10);
         blackPanel.add(blackInput);
         
         // White player selections
         final JPanel whitePanel = new JPanel();
         components.add(whitePanel);
+        final JLabel titleLabel_white = new JLabel("White Player :");
+        whitePanel.add(titleLabel_white);
         final JLabel whitePiece = new JLabel();
-        
-        try {
-            Image whiteImg = ImageIO.read(getClass().getResource("wp.png"));
-            whitePiece.setIcon(new ImageIcon(whiteImg));
-            whitePanel.add(whitePiece);
-            startWindow.setIconImage(whiteImg);
-        }  catch (Exception e) {
-            System.out.println("Required game file wp.png missing");
-        }
-        
-        
         final JTextField whiteInput = new JTextField("White", 10);
         whitePanel.add(whiteInput);
+        
+        
         
         // Timer settings
         final String[] minSecInts = new String[60];
@@ -99,18 +89,22 @@ public class StartMenu implements Runnable {
         
         components.add(timerSettings);
         
+        
+        
         // Buttons
         Box buttons = Box.createHorizontalBox();
-        final JButton quit = new JButton("Quit");
         
+        
+        final JButton quit = new JButton("Quit");
         quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
               startWindow.dispose();
             }
           });
         
-        final JButton instr = new JButton("Instructions");
         
+        
+        final JButton instr = new JButton("Instructions");
         instr.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(startWindow,
@@ -123,8 +117,9 @@ public class StartMenu implements Runnable {
             }
           });
         
-        final JButton start = new JButton("Start");
         
+        
+        final JButton start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String bn = blackInput.getText();
@@ -141,9 +136,22 @@ public class StartMenu implements Runnable {
             }
           });
         
+        
+        
+        final JButton stats = new JButton("Stats");
+        stats.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		System.out.println("Hello welcome to Stats:");
+        		SwingUtilities.invokeLater(MainFrame::new);
+        		
+        	}
+        });
+        
         buttons.add(start);
         buttons.add(Box.createHorizontalStrut(10));
         buttons.add(instr);
+        buttons.add(Box.createHorizontalStrut(10));
+        buttons.add(stats);
         buttons.add(Box.createHorizontalStrut(10));
         buttons.add(quit);
         components.add(buttons);
