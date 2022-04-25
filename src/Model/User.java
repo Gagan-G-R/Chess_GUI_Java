@@ -33,4 +33,8 @@ public class User {
     public String getDepartment() {
         return department;
     }
+    
+    public String toString() {
+    	return getFirstname()+","+getLastname()+","+getID()+","+getDepartment();
+    }
 }

@@ -5,39 +5,39 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class UserDetails extends JPanel {
+public class GameDetails extends JPanel {
 
-    // Table for user data
-    private JTable playerTable;
+    // Table for game data
+    private JTable gameTable;
     // table column
-    private String[] playerTableColumn = {"Player Name", "Wins","Loss","Draw"};
+    private String[] gameTableColumn = {"Time","White Player","Black Player","Result","Game"};
 
     // back button
     private JButton backButton;
-
-    public UserDetails() {
+    
+    public GameDetails() {
         // uses box layout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         // toolbar for buttons
         JToolBar toolBar = new JToolBar();
-        playerTable = new JTable();
+        gameTable = new JTable();
         // scroll bar for table
-        JScrollPane userTableScroll = new JScrollPane(playerTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane gameTableScroll = new JScrollPane(gameTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         backButton = new JButton("Go Back");
         add(toolBar);
         toolBar.add(backButton);
         toolBar.setMaximumSize(new Dimension(Integer.MAX_VALUE, toolBar.getMinimumSize().height));
-        add(userTableScroll);
+        add(gameTableScroll);
 
     }
-    
-    
 
-    // gets users from database and loads to table
-    public void getPlayers(Object[] objects) {
-        DefaultTableModel defaultTableModel = (DefaultTableModel) playerTable.getModel();
-        defaultTableModel.setColumnIdentifiers(playerTableColumn);
+ 
+    
+ // gets Games from database and loads to table
+    public void getGames(Object[] objects) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) gameTable.getModel();
+        defaultTableModel.setColumnIdentifiers(gameTableColumn);
         int i = 0;
         defaultTableModel.getDataVector().removeAllElements();
         while(i < objects.length) {
@@ -48,7 +48,7 @@ public class UserDetails extends JPanel {
         }
     }
     
-    // event listener for back button
+ // event listener for back button
     public void backButton(ActionListener actionListener) {
         backButton.addActionListener(actionListener);
     }

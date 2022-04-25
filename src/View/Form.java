@@ -3,137 +3,55 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import javax.imageio.ImageIO;
 
 public class Form extends JPanel {
 
-    private JTextField firstnameField;
-    private JTextField lastNameField;
-    private JTextField idField;
-    private JTextField departmentField;
-
-    private JButton addButton;
-    private JButton viewButton;
+    private JButton viewGButton;
+    private JButton viewPButton;
 
     public Form() {
 
-        JLabel firstnameLabel = new JLabel("First Name: ");
-        JLabel lastnameLabel = new JLabel("Last Name: ");
-        JLabel idLabel = new JLabel("ID: ");
-        JLabel departmentLabel = new JLabel("Department: ");
+        viewGButton = new JButton("Games Archive");
+        viewGButton.setPreferredSize(new Dimension(278, 40));
+        viewPButton = new JButton("Leader Board");
+        viewPButton.setPreferredSize(new Dimension(278, 40));
+        
+        try {
+        BufferedImage img = ImageIO.read(new File("./Images/meta-chart.png"));
+        JLabel pic = new JLabel(new ImageIcon(img.getScaledInstance(800, 500, Image.SCALE_DEFAULT)));
+        add(pic);
+        }catch(Exception e){System.out.println("Image error : "+e);}
 
-        firstnameField = new JTextField(25);
-        lastNameField = new JTextField(25);
-        idField = new JTextField(25);
-        departmentField = new JTextField(25);
-
-        addButton = new JButton("Add User");
-        addButton.setPreferredSize(new Dimension(278, 40));
-        viewButton = new JButton("View All Users");
-        viewButton.setPreferredSize(new Dimension(278, 40));
-
-        // space between fields
-        Insets fieldsInset = new Insets(0, 0, 10, 0);
-        // space between buttons
-        Insets buttonInset = new Insets(20,0,0,0);
 
         // uses Grid Bag Layout
+        Insets buttonInset = new Insets(20,0,0,0);
+        ImageIcon Chat =  new ImageIcon("./Images/meta-chart.png");
+       
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.insets = fieldsInset;
-        gridBagConstraints.fill = GridBagConstraints.NONE;
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = GridBagConstraints.WEST;
-
-        add(firstnameLabel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-
-        add(firstnameField, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = GridBagConstraints.WEST;
-
-        add(lastnameLabel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-
-        add(lastNameField, gridBagConstraints);
-        //
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = GridBagConstraints.WEST;
-
-        add(idLabel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-
-        add(idField, gridBagConstraints);
-        //
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = GridBagConstraints.WEST;
-
-        add(departmentLabel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-
-        add(departmentField, gridBagConstraints);
-        //
-
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.insets = buttonInset;
-
-        add(addButton, gridBagConstraints);
+        add(viewPButton, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
         gridBagConstraints.insets = buttonInset;
-
-        add(viewButton, gridBagConstraints);
+        add(viewGButton, gridBagConstraints);
+        
     }
 
-    // getters
-    public String getFirstname() {
-        return firstnameField.getText();
+
+    public void viewGames(ActionListener actionListener) {
+        viewGButton.addActionListener(actionListener);
     }
 
-    public String getLastname() {
-        return lastNameField.getText();
+    public void viewPlayers(ActionListener actionListener) {
+        viewPButton.addActionListener(actionListener);
     }
 
-    public String getID() {
-        return idField.getText();
-    }
-
-    public String getDepartment() {
-        return departmentField.getText();
-    }
-
-    public void submitUsers(ActionListener actionListener) {
-        addButton.addActionListener(actionListener);
-    }
-
-    public void viewUsers(ActionListener actionListener) {
-        viewButton.addActionListener(actionListener);
-    }
-
-    // reset fields
-    public void reset(boolean bln) {
-        if(bln) {
-            firstnameField.setText("");
-            lastNameField.setText("");
-            idField.setText("");
-            departmentField.setText("");
-        }
-    }
 }
